@@ -10,6 +10,8 @@ export const makeUser = (
     {
       name: override.name ?? faker.person.fullName(),
       roleId: override.roleId ?? new UniqueEntityID(),
+      email: override.email ?? faker.internet.email(),
+      password: override.password ?? faker.internet.password(),
     },
     id,
   )

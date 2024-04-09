@@ -5,6 +5,10 @@ import { Article } from '@/domain/management/enterprise/entities/article'
 export class InMemoryArticlesRepository implements ArticlesRepository {
   items: Article[] = []
 
+  async updateMany(entities: Article[]): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
+
   async create(article: Article): Promise<void> {
     this.items.push(article)
   }

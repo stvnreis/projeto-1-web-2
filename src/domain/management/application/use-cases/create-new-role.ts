@@ -4,6 +4,7 @@ import { RolesRepository } from '../repositories/roles.repository'
 
 export interface createNewRoleRequest {
   name: string
+  type: 'ADMIN' | 'AUTOR' | 'AVALIADOR'
   canSubmitEditDeleteArticles: boolean
   canManageUsers: boolean
   canDeleteArticlesFromAnyUser: boolean

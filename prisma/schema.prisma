@@ -12,3 +12,86 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum RoleType {
+  ADMIN
+  AUTOR
+  AVALIADOR
+
+  @@map("role_type")
+}
+
+model Role {
+  id                           String   @id @default(uuid()) @db.VarChar(36)
+  name                         String   @unique
+  type                         RoleType
+  canSubmitEditDeleteArticles  Boolean  @default(false) @map("can_submit_edit_delete_articles")
+  canManageUsers               Boolean  @default(false) @map("can_manage_users")
+  canDeleteArticlesFromAnyUser Boolean  @default(false) @map("can_delete_articles_from_any_user")
+  canSubmitArticleToEvaluation Boolean  @default(false) @map("can_submit_article_to_evaluation")
+  canEvaluate                  Boolean  @default(false) @map("can_evaluate")
+  canPubilshArticle            Boolean  @default(false) @map("can_publish_article")
+  User                         User[]
+
+  @@map("role")
+}
+
+model User {
+  id                      String                    @id @default(uuid()) @db.VarChar(36)
+  name                    String                    @db.VarChar()
+  email                   String
+  password                String
+  role                    Role                      @relation(fields: [roleId], references: [id])
+  roleId                  String                    @map("role_id") @db.VarChar(36)
+  ArticleGradeByEvaluator ArticleGradeByEvaluator[]
+}
+
+model Author {
+  id            String          @id @default(uuid()) @db.VarChar(36)
+  name          String          @db.VarChar()
+  AuthorArticle AuthorArticle[]
+
+  @@map("author")
+}
+
+enum FileType {
+  PDF
+
+  @@map("file_type")
+}
+
+model Article {
+  id                      String                    @id @default(uuid()) @db.VarChar(36)
+  title                   String
+  sinopse                 String
+  fileUrl                 String                    @map("file_url")
+  fileType                FileType                  @map("file_type")
+  isPublished             Boolean                   @default(false) @map("is_published")
+  AuthorArticle           AuthorArticle[]
+  ArticleGradeByEvaluator ArticleGradeByEvaluator[]
+
+  @@map("article")
+}
+
+model AuthorArticle {
+  author    Author  @relation(fields: [authorId], references: [id])
+  authorId  String  @map("author_id") @db.VarChar(36)
+  article   Article @relation(fields: [articleId], references: [id], onUpdate: NoAction, onDelete: Cascade)
+  articleId String  @map("article_id") @db.VarChar(36)
+
+  @@unique([authorId, articleId])
+  @@map("author_article")
+}
+
+model ArticleGradeByEvaluator {
+  article     Article @relation(fields: [articleId], references: [id])
+  articleId   String  @map("article_id") @db.VarChar(36)
+  evaluator   User    @relation(fields: [evaluatorId], references: [id])
+  evaluatorId String  @map("evaluator_id") @db.VarChar(36)
+  n1Value     Int     @default(0) @map("n1_value")
+  n2Value     Int     @default(0) @map("n2_value")
+  totalValue  Int     @default(0) @map("total_value")
+
+  @@unique([articleId, evaluatorId])
+  @@map("article_grade_by_evaluator")
+}

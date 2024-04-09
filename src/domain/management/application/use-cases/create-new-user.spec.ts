@@ -21,12 +21,16 @@ describe('unit: Create new User', () => {
     const result = await sut.execute({
       name: 'role-1',
       roleId: role.id.toString(),
+      email: 'email-1',
+      password: 'senha-1',
     })
 
     expect(result.isRight()).toBeTruthy()
 
     if (result.isRight()) {
       expect(result.value.user.name).toEqual('role-1')
+      expect(result.value.user.email).toEqual('email-1')
+      expect(result.value.user.password).toEqual('senha-1')
       expect(result.value.user).toMatchObject(inMemoryUsersRepository.items[0])
     }
   })

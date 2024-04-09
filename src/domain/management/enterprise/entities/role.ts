@@ -3,7 +3,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 
 export interface RoleProps {
   name: string
-  type: 'ADMIN' | 'AUTHOR' | 'USER'
+  type: 'ADMIN' | 'AUTOR' | 'AVALIADOR'
   canSubmitEditDeleteArticles: boolean
   canManageUsers: boolean
   canDeleteArticlesFromAnyUser: boolean
@@ -41,7 +41,7 @@ export class Role extends Entity<RoleProps> {
     return this.props.canPubilshArticle
   }
 
-  get type(): 'ADMIN' | 'AUTHOR' | 'USER' {
+  get type(): 'ADMIN' | 'AUTOR' | 'AVALIADOR' {
     return this.props.type
   }
 

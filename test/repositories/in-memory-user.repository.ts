@@ -7,11 +7,21 @@ import { User } from '@/domain/management/enterprise/entities/user'
 export class InMemoryUsersRepository implements UsersRepository {
   items: User[] = []
 
+  async updateMany(entities: User[]): Promise<void> {
+    throw new Error('Method not implemented.')
+  }
+
   async findBy({ name }: findByOptions): Promise<User> {
     const user = this.items.find((item) => item.name === name)
     if (!user) return null
 
     return user
+  }
+
+  async updateOne(entity: User): Promise<void> {
+    const itemIndex = this.items.findIndex((item) => item.id.equals(entity.id))
+
+    this.items[itemIndex] = entity
   }
 
   async create(user: User): Promise<void> {

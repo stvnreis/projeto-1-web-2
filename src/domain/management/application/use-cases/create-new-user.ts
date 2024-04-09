@@ -3,8 +3,10 @@ import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users.repository'
 import { RolesRepository } from '../repositories/roles.repository'
 
-export interface crateNewUserRequest {
+export interface createNewUserRequest {
   name: string
+  email: string
+  password: string
   roleId: string
 }
 
@@ -18,15 +20,17 @@ export class CreateNewUser {
 
   async execute({
     name,
+    email,
+    password,
     roleId,
-  }: crateNewUserRequest): Promise<craeteNewUserResponse> {
+  }: createNewUserRequest): Promise<craeteNewUserResponse> {
     const userExists = await this.usersRepository.findBy({ name })
     if (userExists) return left(new Error('User name already taken'))
 
     const role = await this.rolesRepository.findById(roleId)
     if (!role) return left(new Error('Role not found'))
 
-    const user = User.create({ name, roleId: role.id })
+    const user = User.create({ name, roleId: role.id, email, password })
 
     await this.usersRepository.create(user)
 

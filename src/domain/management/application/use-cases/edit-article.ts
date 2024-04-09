@@ -18,7 +18,7 @@ export interface editArticleRequest {
     id: string
     role: {
       id: string
-      type: 'ADMIN' | 'AUTHOR' | 'USER'
+      type: 'ADMIN' | 'AUTOR' | 'AVALIADOR'
     }
   }
 }

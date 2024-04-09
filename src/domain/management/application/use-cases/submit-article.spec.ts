@@ -1,5 +1,5 @@
 import { InMemoryRolesRepository } from 'test/repositories/in-memory-roles.repository'
-import { PublishArticle } from './publish-article'
+import { SubmitArticle } from './submit-article'
 import { InMemoryArticlesRepository } from 'test/repositories/in-memory-articles.repository'
 import { InMemoryAuthorsRepository } from 'test/repositories/in-memory-authors.repository'
 import { makeRole } from 'test/factories/make-role'
@@ -11,13 +11,13 @@ describe('unit: Register New Article', async () => {
   let inMemoryRolesRepository: InMemoryRolesRepository
   let inMemoryAuthorsrepository: InMemoryAuthorsRepository
   let inMemoryArticlesRepository: InMemoryArticlesRepository
-  let sut: PublishArticle
+  let sut: SubmitArticle
 
   beforeEach(() => {
     inMemoryRolesRepository = new InMemoryRolesRepository()
     inMemoryAuthorsrepository = new InMemoryAuthorsRepository()
     inMemoryArticlesRepository = new InMemoryArticlesRepository()
-    sut = new PublishArticle(
+    sut = new SubmitArticle(
       inMemoryArticlesRepository,
       inMemoryAuthorsrepository,
       inMemoryRolesRepository,

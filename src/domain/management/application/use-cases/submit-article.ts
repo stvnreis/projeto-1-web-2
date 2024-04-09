@@ -6,7 +6,7 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { AuthorsRepository } from '../repositories/authors.repository'
 import { RolesRepository } from '../repositories/roles.repository'
 
-export interface publishArticleRequest {
+export interface submitArticleRequest {
   title: string
   sinopse: string
   file: {
@@ -18,14 +18,14 @@ export interface publishArticleRequest {
     id: string
     role: {
       id: string
-      type: 'ADMIN' | 'AUTHOR' | 'USER'
+      type: 'ADMIN' | 'AUTOR' | 'AVALIADOR'
     }
   }
 }
 
-export type publishArticleResponse = Either<Error, { article: Article }>
+export type submitArticleResponse = Either<Error, { article: Article }>
 
-export class PublishArticle {
+export class SubmitArticle {
   constructor(
     private readonly articlesRepository: ArticlesRepository,
     private readonly authorsRepository: AuthorsRepository,
@@ -38,7 +38,7 @@ export class PublishArticle {
     file,
     authorsId,
     user,
-  }: publishArticleRequest): Promise<publishArticleResponse> {
+  }: submitArticleRequest): Promise<submitArticleResponse> {
     const authors = await this.authorsRepository.findManyBy({ authorsId })
     if (authors.length > 5)
       return left(new Error('There can only be 5 authors'))

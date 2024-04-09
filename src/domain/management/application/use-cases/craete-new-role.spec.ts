@@ -1,5 +1,5 @@
 import { InMemoryRolesRepository } from 'test/repositories/in-memory-roles.repository'
-import { CreateNewRole } from './create-new-role'
+import { CreateNewRole, createNewRoleRequest } from './create-new-role'
 
 describe('unit: Create new Role', () => {
   let inMemoryRolesRepository: InMemoryRolesRepository
@@ -19,7 +19,7 @@ describe('unit: Create new Role', () => {
       canSubmitArticleToEvaluation: true,
       canEvaluate: true,
       canPubilshArticle: true,
-    }
+    } as createNewRoleRequest
 
     const result = await sut.execute({ ...role })
 
