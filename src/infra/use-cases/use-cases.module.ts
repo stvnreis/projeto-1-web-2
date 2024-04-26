@@ -17,6 +17,10 @@ import { FetchUsers } from '@/domain/management/application/use-cases/fetch-user
 import { FetchUsersUseCase } from './fetch-users.use-case'
 import { FindUserById } from '@/domain/management/application/use-cases/find-user-by-id'
 import { FindUserByIdUseCase } from './find-user-by-id.use-case'
+import { AuthenticateUser } from '@/domain/management/application/use-cases/authenticate-user'
+import { AuthenticateUserUseCase } from '@/infra/use-cases/authenticate-user.use-case'
+import { CreateNewRole } from '@/domain/management/application/use-cases/create-new-role'
+import { CreateNewRoleUseCase } from '@/infra/use-cases/create-new-role.use-case'
 
 @Module({
   providers: [
@@ -29,6 +33,8 @@ import { FindUserByIdUseCase } from './find-user-by-id.use-case'
     { provide: FetchArticles, useClass: FetchArticlesUseCase },
     { provide: FetchUsers, useClass: FetchUsersUseCase },
     { provide: FindUserById, useClass: FindUserByIdUseCase },
+    { provide: AuthenticateUser, useClass: AuthenticateUserUseCase },
+    { provide: CreateNewRole, useClass: CreateNewRoleUseCase },
   ],
   exports: [
     CreateNewUser,
@@ -40,6 +46,8 @@ import { FindUserByIdUseCase } from './find-user-by-id.use-case'
     FetchArticles,
     FetchUsers,
     FindUserById,
+    AuthenticateUser,
+    CreateNewRole,
   ],
 })
 export class UseCasesModule {}

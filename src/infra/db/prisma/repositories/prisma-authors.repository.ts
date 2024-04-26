@@ -30,8 +30,10 @@ export class PrismaAuthorsRepository implements AuthorsRepository {
     return AuthorsMapper.toDomain(author)
   }
 
-  findAll(): Promise<Author[]> {
-    throw new Error('Method not implemented.')
+  async findAll(): Promise<Author[]> {
+    const authors = await this.db.author.findMany()
+
+    return authors.map(AuthorsMapper.toDomain)
   }
 
   async findManyBy({ authorsId }: findManyByOptions): Promise<Author[]> {

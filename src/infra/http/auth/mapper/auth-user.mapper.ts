@@ -1,16 +1,23 @@
 import { Role } from '@/domain/management/enterprise/entities/role'
 import { User } from '@/domain/management/enterprise/entities/user'
+import { authUserSchema } from '@/domain/management/application/services/auth.service'
 
-export class UserPresenter {
-  static toHttp(entity: User, role?: Role) {
+export class AuthUserMapper {
+  static toPayload(
+    user: User,
+    role: Role,
+    accessToken?: string,
+  ): authUserSchema {
     return {
-      id: entity.id.toString(),
-      name: entity.name,
-      email: entity.email,
+      user: {
+        id: user.id.toString(),
+        name: user.name,
+        email: user.email,
+      },
       role: {
-        id: entity.roleId.toString(),
-        type: role.type,
+        id: role.id.toString(),
         name: role.name,
+        type: role.type,
         canSubmitEditDeleteArticles: role.canSubmitEditDeleteArticles,
         canManageUsers: role.canManageUsers,
         canDeleteArticlesFromAnyUser: role.canDeleteArticlesFromAnyUser,
@@ -18,6 +25,7 @@ export class UserPresenter {
         canEvaluate: role.canEvaluate,
         canPubilshArticle: role.canPubilshArticle,
       },
+      accessToken: accessToken ?? '',
     }
   }
 }

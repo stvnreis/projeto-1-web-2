@@ -9,4 +9,4 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=docker
-      - POSTGRES_DB=arenamerlim
+      - POSTGRES_DB=web

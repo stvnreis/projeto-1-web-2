@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import { envSchema } from './infra/env/env'
 import { DbModule } from './infra/db/db.module'
 import { HttpModule } from './infra/http/http.module'
+import { JwtAuthModule } from '@/infra/http/auth/jwt-auth.module'
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { HttpModule } from './infra/http/http.module'
     EnvModule,
     DbModule,
     HttpModule,
+    JwtAuthModule,
   ],
 })
 export class AppModule {}

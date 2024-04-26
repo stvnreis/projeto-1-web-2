@@ -30,6 +30,13 @@ export class PrismaUsersRepository implements UsersRepository {
     return UserMapper.toDomain(user)
   }
 
+  async findByEmail(email: string): Promise<User> {
+    const user = await this.db.user.findFirst({ where: { email } })
+    if (!user) return null
+
+    return UserMapper.toDomain(user)
+  }
+
   async findAll(): Promise<User[]> {
     const users = await this.db.user.findMany()
 
@@ -44,7 +51,7 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async updateOne(entity: User): Promise<void> {
-    const data = UserMapper.toPrisma(entity)
+    const data = UserMapper.toPrismaUpdate(entity)
 
     await this.db.user.update({ data, where: { id: entity.id.toString() } })
   }

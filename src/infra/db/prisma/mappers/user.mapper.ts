@@ -13,6 +13,15 @@ export class UserMapper {
     }
   }
 
+  static toPrismaUpdate(entity: User): Prisma.UserUncheckedUpdateInput {
+    return {
+      email: entity.email,
+      name: entity.name,
+      password: entity.password,
+      roleId: entity.roleId.toString(),
+    }
+  }
+
   static toDomain(raw: PrismaUser): User {
     return User.create(
       {

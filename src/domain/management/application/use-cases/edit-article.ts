@@ -4,6 +4,7 @@ import { ArticlesRepository } from '../repositories/articles.repository'
 import { AuthorsRepository } from '../repositories/authors.repository'
 import { File } from '../../enterprise/entities/value-objects/file'
 import { RolesRepository } from '../repositories/roles.repository'
+import { authUserSchema } from '@/domain/management/application/services/auth.service'
 
 export interface editArticleRequest {
   articleId: string
@@ -14,13 +15,7 @@ export interface editArticleRequest {
     type: 'PDF'
   }
   authorsId: string[]
-  user: {
-    id: string
-    role: {
-      id: string
-      type: 'ADMIN' | 'AUTOR' | 'AVALIADOR'
-    }
-  }
+  payload: authUserSchema
 }
 
 export type editArticleResponse = Either<Error, { article: Article }>
@@ -38,16 +33,16 @@ export class EditArticle {
     sinopse,
     file,
     authorsId,
-    user,
+    payload,
   }: editArticleRequest): Promise<editArticleResponse> {
     const article = await this.articlesRepository.findById(articleId)
     if (!article) return left(new Error('Article not found.'))
 
-    const role = await this.rolesRepository.findById(user.role.id)
+    const role = await this.rolesRepository.findById(payload.role.id)
     if (!role) return left(new Error('Role not found.'))
 
     if (!role.canSubmitEditDeleteArticles)
-      return left(new Error('Non authorized.'))
+      return left(new Error('Not allowed.'))
 
     const authors = await this.authorsRepository.findManyBy({ authorsId })
     if (!(authors.length === authorsId.length))

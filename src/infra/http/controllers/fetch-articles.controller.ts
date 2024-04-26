@@ -10,8 +10,6 @@ export class FetchArticlesController {
   async handle() {
     const result = await this.sut.execute()
 
-    console.log(result)
-
     if (result.isRight())
       return {
         data: result.value.items.map((item) =>

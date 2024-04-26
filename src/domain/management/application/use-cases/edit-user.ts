@@ -3,18 +3,15 @@ import { User } from '../../enterprise/entities/user'
 import { UsersRepository } from '../repositories/users.repository'
 import { RolesRepository } from '../repositories/roles.repository'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
+import { authUserSchema } from '@/domain/management/application/services/auth.service'
 
 export interface editUserRequest {
   id: string
   name: string
-  roleId: string
-  user: {
+  role: {
     id: string
-    role: {
-      id: string
-      type: 'ADMIN' | 'AUTOR' | 'AVALIADOR'
-    }
   }
+  payload: authUserSchema
 }
 
 export type editUserResponse = Either<Error, { user: User }>
@@ -28,18 +25,18 @@ export class EditUser {
   async execute({
     id,
     name,
-    roleId,
-    user,
+    role,
+    payload,
   }: editUserRequest): Promise<editUserResponse> {
-    const role = await this.rolesRepository.findById(user.role.id)
-    if (!role) return left(new Error('Role not found'))
+    const currentUserRole = await this.rolesRepository.findById(payload.role.id)
+    if (!currentUserRole) return left(new Error('Role not found'))
 
-    if (!role.canManageUsers) return left(new Error('Not allowed.'))
+    if (!currentUserRole.canManageUsers) return left(new Error('Not allowed.'))
 
     const entity = await this.usersRepository.findById(id)
 
     entity.changeName(name)
-    entity.changeRole(new UniqueEntityID(roleId))
+    entity.changeRole(new UniqueEntityID(role.id))
 
     await this.usersRepository.updateOne(entity)
 

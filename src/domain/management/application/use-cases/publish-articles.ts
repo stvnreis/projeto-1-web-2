@@ -2,16 +2,11 @@ import { Either, left, right } from '@/core/either'
 import { Article } from '../../enterprise/entities/article'
 import { ArticlesRepository } from '../repositories/articles.repository'
 import { RolesRepository } from '../repositories/roles.repository'
+import { authUserSchema } from '@/domain/management/application/services/auth.service'
 
 export interface publishArticlesRequest {
   articlesId: string[]
-  user: {
-    id: string
-    role: {
-      id: string
-      type: 'ADMIN' | 'AUTOR' | 'AVALIADOR'
-    }
-  }
+  payload: authUserSchema
 }
 
 export type publishArticlesResponse = Either<Error, { articles: Article[] }>
@@ -24,13 +19,13 @@ export class PublishArticles {
 
   async execute({
     articlesId,
-    user,
+    payload,
   }: publishArticlesRequest): Promise<publishArticlesResponse> {
-    const role = await this.rolesRepository.findById(user.role.id)
+    const role = await this.rolesRepository.findById(payload.role.id)
     if (!role) return left(new Error('Role not found'))
 
     if (!role.canSubmitArticleToEvaluation)
-      return left(new Error('Non authorized'))
+      return left(new Error('Not allowed'))
 
     const articles = await this.articlesRepository.findAll({ ids: articlesId })
     if (!articles.length) return left(new Error('No article found!'))

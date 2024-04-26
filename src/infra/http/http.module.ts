@@ -9,6 +9,8 @@ import { FindArticleByIdController } from './controllers/find-article-by-id.cont
 import { FetchArticlesController } from './controllers/fetch-articles.controller'
 import { FetchUsersController } from './controllers/fetch-users.controller'
 import { FindUserByIdController } from './controllers/find-user-by-id.controller'
+import { CreateNewRoleController } from '@/infra/http/controllers/create-new-role.controller'
+import { AuthenticateUserController } from '@/infra/http/controllers/authenticate-user.controller'
 
 @Module({
   imports: [UseCasesModule],
@@ -22,6 +24,8 @@ import { FindUserByIdController } from './controllers/find-user-by-id.controller
     FetchArticlesController,
     FetchUsersController,
     FindUserByIdController,
+    CreateNewRoleController,
+    AuthenticateUserController,
   ],
 })
 export class HttpModule {}
