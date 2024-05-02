@@ -10,4 +10,5 @@ export abstract class ArticlesRepository
   abstract findByAuthorId(authorId: string): Promise<Article[]>
   abstract updateOne(entity: Article): Promise<void>
   abstract updateMany(entities: Article[]): Promise<void>
+  abstract delete(id: string): Promise<void>
 }

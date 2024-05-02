@@ -89,4 +89,14 @@ export class PrismaArticlesRepostory implements ArticlesRepository {
       where: { id: entity.id.toString() },
     })
   }
+
+  async delete(id: string): Promise<void> {
+    await this.db.articleGradeByEvaluator.deleteMany({
+      where: { articleId: id },
+    })
+
+    await this.db.authorArticle.deleteMany({ where: { articleId: id } })
+
+    await this.db.article.delete({ where: { id } })
+  }
 }

@@ -29,7 +29,7 @@ export class Nota extends Entity<NotaProps> {
     return new Nota(
       {
         ...props,
-        totalValue: props.totalValue ?? props.n1Value * props.n2Value,
+        totalValue: props.totalValue ?? props.n1Value + props.n2Value,
       },
       id,
     )

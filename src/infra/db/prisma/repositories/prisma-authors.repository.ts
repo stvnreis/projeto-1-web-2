@@ -6,6 +6,7 @@ import { Author } from '@/domain/management/enterprise/entities/author'
 import { Injectable } from '@nestjs/common'
 import { AuthorsMapper } from '../mappers/authors.mapper'
 import { PrismaService } from '../prisma.service'
+import { undefined } from 'zod'
 
 @Injectable()
 export class PrismaAuthorsRepository implements AuthorsRepository {
@@ -48,5 +49,9 @@ export class PrismaAuthorsRepository implements AuthorsRepository {
     const data = AuthorsMapper.toPrisma(author)
 
     await this.db.author.create({ data })
+  }
+
+  async delete(id: string): Promise<void> {
+    throw new Error('Method not implemented.')
   }
 }

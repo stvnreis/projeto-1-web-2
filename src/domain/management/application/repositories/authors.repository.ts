@@ -12,4 +12,5 @@ export abstract class AuthorsRepository implements RepositoryInterface<Author> {
   abstract create(author: Author): Promise<void>
   abstract updateMany(entities: Author[]): Promise<void>
   abstract updateOne(entity: Author): Promise<void>
+  abstract delete(id: string): Promise<void>
 }

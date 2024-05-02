@@ -13,4 +13,5 @@ export abstract class UsersRepository implements RepositoryInterface<User> {
   abstract findBy(options: findByOptions): Promise<User>
   abstract updateOne(entity: User): Promise<void>
   abstract updateMany(entities: User[]): Promise<void>
+  abstract delete(id: string): Promise<void>
 }

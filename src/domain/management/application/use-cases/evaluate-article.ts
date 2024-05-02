@@ -29,15 +29,14 @@ export class EvaluateArticle {
     const article = await this.articlesRepository.findById(articleId)
     if (!article) return left(new Error('Article not found!'))
 
-    const role = await this.rolesRepository.findById(payload.role.id)
-    if (!role) return left(new Error('Role not found!'))
+    console.log(payload)
 
-    if (!role.canEvaluate) return left(new Error('Non authorized!'))
+    if (!payload.role.canEvaluate) return left(new Error('Non authorized!'))
 
     article.evaluate(
       Nota.create({
-        n1Value: n1,
-        n2Value: n2,
+        n1Value: typeof n1 === 'string' ? parseInt(n1) : n1,
+        n2Value: typeof n2 === 'string' ? parseInt(n2) : n2,
         evaluatorId: new UniqueEntityID(payload.user.id),
       }),
     )

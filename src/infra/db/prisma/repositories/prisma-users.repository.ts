@@ -6,6 +6,7 @@ import { User } from '@/domain/management/enterprise/entities/user'
 import { Injectable } from '@nestjs/common'
 import { UserMapper } from '../mappers/user.mapper'
 import { PrismaService } from '../prisma.service'
+import { undefined } from 'zod'
 
 @Injectable()
 export class PrismaUsersRepository implements UsersRepository {
@@ -54,5 +55,9 @@ export class PrismaUsersRepository implements UsersRepository {
     const data = UserMapper.toPrismaUpdate(entity)
 
     await this.db.user.update({ data, where: { id: entity.id.toString() } })
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.db.user.delete({ where: { id } })
   }
 }

@@ -8,4 +8,5 @@ export interface RepositoryInterface<T> {
   findAll(options?: findAllOptions): Promise<T[]>
   updateOne(entity: T): Promise<void>
   updateMany(entities: T[]): Promise<void>
+  delete(id: string): Promise<void>
 }

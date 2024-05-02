@@ -8,9 +8,7 @@ import { authUserSchema } from '@/domain/management/application/services/auth.se
 export interface editUserRequest {
   id: string
   name: string
-  role: {
-    id: string
-  }
+  roleId: string
   payload: authUserSchema
 }
 
@@ -25,7 +23,7 @@ export class EditUser {
   async execute({
     id,
     name,
-    role,
+    roleId,
     payload,
   }: editUserRequest): Promise<editUserResponse> {
     const currentUserRole = await this.rolesRepository.findById(payload.role.id)
@@ -34,9 +32,10 @@ export class EditUser {
     if (!currentUserRole.canManageUsers) return left(new Error('Not allowed.'))
 
     const entity = await this.usersRepository.findById(id)
+    const role = await this.rolesRepository.findById(roleId)
 
     entity.changeName(name)
-    entity.changeRole(new UniqueEntityID(role.id))
+    entity.changeRole(role.id)
 
     await this.usersRepository.updateOne(entity)
 

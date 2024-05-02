@@ -11,6 +11,10 @@ import { FetchUsersController } from './controllers/fetch-users.controller'
 import { FindUserByIdController } from './controllers/find-user-by-id.controller'
 import { CreateNewRoleController } from '@/infra/http/controllers/create-new-role.controller'
 import { AuthenticateUserController } from '@/infra/http/controllers/authenticate-user.controller'
+import { FetchRolesController } from '@/infra/http/controllers/fetch-roles.controller'
+import { DeleteUserController } from '@/infra/http/controllers/delete-user.controller'
+import { DeleteArticleController } from '@/infra/http/controllers/delete-article.controller'
+import { EditArticleController } from '@/infra/http/controllers/edit-article.controller'
 
 @Module({
   imports: [UseCasesModule],
@@ -26,6 +30,10 @@ import { AuthenticateUserController } from '@/infra/http/controllers/authenticat
     FindUserByIdController,
     CreateNewRoleController,
     AuthenticateUserController,
+    FetchRolesController,
+    DeleteUserController,
+    DeleteArticleController,
+    EditArticleController,
   ],
 })
 export class HttpModule {}

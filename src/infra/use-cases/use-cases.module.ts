@@ -21,6 +21,14 @@ import { AuthenticateUser } from '@/domain/management/application/use-cases/auth
 import { AuthenticateUserUseCase } from '@/infra/use-cases/authenticate-user.use-case'
 import { CreateNewRole } from '@/domain/management/application/use-cases/create-new-role'
 import { CreateNewRoleUseCase } from '@/infra/use-cases/create-new-role.use-case'
+import { FetchRoles } from '@/domain/management/application/use-cases/fetch-roles'
+import { FetchRolesUseCase } from '@/infra/use-cases/fetch-roles.use-case'
+import { DeleteUser } from '@/domain/management/application/use-cases/delete-user'
+import { DeleteUserUseCase } from '@/infra/use-cases/delete-user.use-case'
+import { DeleteArticle } from '@/domain/management/application/use-cases/delete-article'
+import { DeleteArticleUseCase } from '@/infra/use-cases/delete-article.use-case'
+import { EditArticle } from '@/domain/management/application/use-cases/edit-article'
+import { EditArticleUseCase } from '@/infra/use-cases/edit-article.use-case'
 
 @Module({
   providers: [
@@ -35,6 +43,10 @@ import { CreateNewRoleUseCase } from '@/infra/use-cases/create-new-role.use-case
     { provide: FindUserById, useClass: FindUserByIdUseCase },
     { provide: AuthenticateUser, useClass: AuthenticateUserUseCase },
     { provide: CreateNewRole, useClass: CreateNewRoleUseCase },
+    { provide: FetchRoles, useClass: FetchRolesUseCase },
+    { provide: DeleteUser, useClass: DeleteUserUseCase },
+    { provide: DeleteArticle, useClass: DeleteArticleUseCase },
+    { provide: EditArticle, useClass: EditArticleUseCase },
   ],
   exports: [
     CreateNewUser,
@@ -48,6 +60,10 @@ import { CreateNewRoleUseCase } from '@/infra/use-cases/create-new-role.use-case
     FindUserById,
     AuthenticateUser,
     CreateNewRole,
+    FetchRoles,
+    DeleteUser,
+    DeleteArticle,
+    EditArticle,
   ],
 })
 export class UseCasesModule {}
