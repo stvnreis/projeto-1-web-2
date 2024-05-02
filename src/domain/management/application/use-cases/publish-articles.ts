@@ -5,11 +5,11 @@ import { RolesRepository } from '../repositories/roles.repository'
 import { authUserSchema } from '@/domain/management/application/services/auth.service'
 
 export interface publishArticlesRequest {
-  articlesId: string[]
+  articleId: string
   payload: authUserSchema
 }
 
-export type publishArticlesResponse = Either<Error, { articles: Article[] }>
+export type publishArticlesResponse = Either<Error, { article: Article }>
 
 export class PublishArticles {
   constructor(
@@ -18,7 +18,7 @@ export class PublishArticles {
   ) {}
 
   async execute({
-    articlesId,
+    articleId,
     payload,
   }: publishArticlesRequest): Promise<publishArticlesResponse> {
     const role = await this.rolesRepository.findById(payload.role.id)
@@ -27,15 +27,13 @@ export class PublishArticles {
     if (!role.canSubmitArticleToEvaluation)
       return left(new Error('Not allowed'))
 
-    const articles = await this.articlesRepository.findAll({ ids: articlesId })
-    if (!articles.length) return left(new Error('No article found!'))
+    const article = await this.articlesRepository.findById(articleId)
+    if (!article) return left(new Error('Artigo não encontrado.'))
 
-    articles.forEach(async (article) => {
-      article.publish()
+    article.publish()
 
-      await this.articlesRepository.updateOne(article)
-    })
+    await this.articlesRepository.updateOne(article)
 
-    return right({ articles })
+    return right({ article })
   }
 }

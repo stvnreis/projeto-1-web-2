@@ -29,6 +29,8 @@ import { DeleteArticle } from '@/domain/management/application/use-cases/delete-
 import { DeleteArticleUseCase } from '@/infra/use-cases/delete-article.use-case'
 import { EditArticle } from '@/domain/management/application/use-cases/edit-article'
 import { EditArticleUseCase } from '@/infra/use-cases/edit-article.use-case'
+import { FetchAuthors } from '@/domain/management/application/use-cases/fetch-authors'
+import { FetchAuthorsUseCase } from '@/infra/use-cases/fetch-authors.use-case'
 
 @Module({
   providers: [
@@ -47,6 +49,7 @@ import { EditArticleUseCase } from '@/infra/use-cases/edit-article.use-case'
     { provide: DeleteUser, useClass: DeleteUserUseCase },
     { provide: DeleteArticle, useClass: DeleteArticleUseCase },
     { provide: EditArticle, useClass: EditArticleUseCase },
+    { provide: FetchAuthors, useClass: FetchAuthorsUseCase },
   ],
   exports: [
     CreateNewUser,
@@ -64,6 +67,7 @@ import { EditArticleUseCase } from '@/infra/use-cases/edit-article.use-case'
     DeleteUser,
     DeleteArticle,
     EditArticle,
+    FetchAuthors,
   ],
 })
 export class UseCasesModule {}

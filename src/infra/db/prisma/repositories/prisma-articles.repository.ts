@@ -46,6 +46,11 @@ export class PrismaArticlesRepostory implements ArticlesRepository {
             ? { in: options.ids }
             : { not: this.EMPTY_STRING },
       },
+      orderBy: {
+        ArticleGradeByEvaluator: {
+          _count: 'desc',
+        },
+      },
     })
 
     return articles.map((article) =>
@@ -87,6 +92,14 @@ export class PrismaArticlesRepostory implements ArticlesRepository {
     await this.db.article.update({
       data,
       where: { id: entity.id.toString() },
+    })
+
+    await this.db.authorArticle.deleteMany({
+      where: { articleId: entity.id.toString() },
+    })
+
+    await this.db.authorArticle.createMany({
+      data: ArticleMapper.authorArticleCreateMany(entity),
     })
   }
 

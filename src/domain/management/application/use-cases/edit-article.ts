@@ -14,7 +14,9 @@ export interface editArticleRequest {
     url: string
     type: 'PDF'
   }
-  authorsId: string[]
+  authors: {
+    id: string
+  }[]
   payload: authUserSchema
 }
 
@@ -32,7 +34,7 @@ export class EditArticle {
     title,
     sinopse,
     file,
-    authorsId,
+    authors,
     payload,
   }: editArticleRequest): Promise<editArticleResponse> {
     const article = await this.articlesRepository.findById(articleId)
@@ -44,14 +46,16 @@ export class EditArticle {
     if (!role.canSubmitEditDeleteArticles)
       return left(new Error('Not allowed.'))
 
-    const authors = await this.authorsRepository.findManyBy({ authorsId })
-    if (!(authors.length === authorsId.length))
+    const authorsEntity = await this.authorsRepository.findManyBy({
+      authorsId: authors.map((author) => author.id),
+    })
+    if (!(authorsEntity.length === authors.length))
       return left(new Error('Author not found.'))
 
     article.title = title
     article.sinopse = sinopse
     article.changeFile(File.create({ ...file }))
-    article.changeAuthorsId(authors.map((author) => author.id))
+    article.changeAuthorsId(authorsEntity.map((author) => author.id))
 
     await this.articlesRepository.updateOne(article)
 

@@ -12,9 +12,9 @@ export class FetchArticlesController {
 
     if (result.isRight())
       return {
-        data: result.value.items.map((item) =>
-          ArticlePresenter.toHttp(item.article, item.authors),
-        ),
+        data: result.value.items
+          .map((item) => ArticlePresenter.toHttp(item.article, item.authors))
+          .sort((a, b) => a.gradeMd + b.gradeMd),
       }
   }
 }

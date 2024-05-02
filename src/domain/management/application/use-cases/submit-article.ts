@@ -14,7 +14,9 @@ export interface submitArticleRequest {
     url: string
     type: 'PDF'
   }
-  authorsId: string[]
+  authors: {
+    id: string
+  }[]
   payload: authUserSchema
 }
 
@@ -31,12 +33,16 @@ export class SubmitArticle {
     title,
     sinopse,
     file,
-    authorsId,
+    authors,
     payload,
   }: submitArticleRequest): Promise<submitArticleResponse> {
-    const authors = await this.authorsRepository.findManyBy({ authorsId })
+    const authorsEntity = await this.authorsRepository.findManyBy({
+      authorsId: authors.map((author) => author.id),
+    })
     if (authors.length > 5)
       return left(new Error('There can only be 5 authors'))
+
+    console.log(authors.map((author) => author.id))
 
     const role = await this.rolesRepository.findById(payload.role.id)
     if (!role) return left(new Error('Role not found'))
@@ -48,7 +54,7 @@ export class SubmitArticle {
         title,
         sinopse,
         file: File.create({ type: file.type, url: file.url }),
-        authorsId: authors.map((author) => author.id),
+        authorsId: authorsEntity.map((author) => author.id),
       },
       new UniqueEntityID(),
     )

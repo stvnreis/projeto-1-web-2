@@ -15,6 +15,7 @@ import { FetchRolesController } from '@/infra/http/controllers/fetch-roles.contr
 import { DeleteUserController } from '@/infra/http/controllers/delete-user.controller'
 import { DeleteArticleController } from '@/infra/http/controllers/delete-article.controller'
 import { EditArticleController } from '@/infra/http/controllers/edit-article.controller'
+import { FetchAuthorsController } from '@/infra/http/controllers/fetch-authors.controller'
 
 @Module({
   imports: [UseCasesModule],
@@ -34,6 +35,7 @@ import { EditArticleController } from '@/infra/http/controllers/edit-article.con
     DeleteUserController,
     DeleteArticleController,
     EditArticleController,
+    FetchAuthorsController,
   ],
 })
 export class HttpModule {}

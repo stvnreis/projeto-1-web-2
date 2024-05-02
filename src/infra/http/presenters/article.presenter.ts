@@ -31,6 +31,7 @@ export class ArticlePresenter {
       grades,
       gradeMd:
         grades.reduce((acc, agg) => (acc += agg.total / 2), 0) / grades.length,
+      isPublished: entity.isPublished,
     }
   }
 }

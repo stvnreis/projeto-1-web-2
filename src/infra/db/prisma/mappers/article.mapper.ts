@@ -61,6 +61,17 @@ export class ArticleMapper {
     }
   }
 
+  static authorArticleCreateMany(
+    entity: Article,
+  ): Prisma.AuthorArticleCreateManyInput[] {
+    return entity.authorsId.map((author) => {
+      return {
+        authorId: author.toString(),
+        articleId: entity.id.toString(),
+      }
+    })
+  }
+
   static toPrismaUpdate(entity: Article): Prisma.ArticleUncheckedUpdateInput {
     return {
       fileType: entity.file.type,
